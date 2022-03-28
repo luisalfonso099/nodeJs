@@ -2,7 +2,7 @@ const express = require('express');
 const res = require('express/lib/response');
 const app = express();
 
-const puerto = 3000;
+const puerto = process.env.PORT || 3000;
 
 // motor de plantilla
 
