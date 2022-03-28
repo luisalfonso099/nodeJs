@@ -2,7 +2,30 @@ const express = require('express');
 const res = require('express/lib/response');
 const app = express();
 
+
+
 const puerto = process.env.PORT || 3000;
+
+//Coneccion a base de datos
+
+const mongoose = require('mongoose');
+
+
+const dbName = 'veterinaria'
+const password = 'Alfonso.1994'
+const uri = `mongodb+srv://LuisPrueba:${password}@cluster0.wpgte.mongodb.net/${dbName}?retryWrites=true&w=majority`
+
+
+mongoose.connect(uri,
+    {useNewUrlParser: true, useUnifiedTopology: true,}).then( () => console.log('Base de datos conectada'))
+  .catch(e => console.log(e))
+
+// main().catch(err => console.log(err));
+
+// async function main() {
+//   await mongoose.connect('mongodb://localhost:27017/test');
+// }
+
 
 // motor de plantilla
 
@@ -10,14 +33,16 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views')
 
 
+
+
 app.use(express.static(__dirname + "/public")); 
 
-app.get('/',(req,res)=>{
-    res.render('index', {titulo: 'Mi titulo dinamico'})
-})
-app.get('/servicios',(req,res)=>{
-    res.render('servicios', {tituloServicios: 'Este es mi dato dinamico'})
-})
+
+
+//  Rutas 
+app.use('/', require('./router/rutasWeb'))
+app.use('/mascotas', require('./router/mascotas'))
+
 
 
 app.listen(puerto, ()=>{
